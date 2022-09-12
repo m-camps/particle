@@ -3,96 +3,91 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart' hide Image, Draggable;
+import 'dart:math';
+import 'dart:developer' as developer;
 
 class CirclesExample extends FlameGame with HasCollisionDetection, TapDetector {
   @override
-  Future<void> onLoad() async {
-    add(ScreenHitbox());
-    add(MyCircle(Vector2(10, 10), 100, Paint()..color = Colors.blue));
-  }
+  Color backgroundColor() => Color.fromARGB(255, 64, 63, 72);
 
   @override
-  void onTapDown(TapDownInfo info) {
-    add(MyCollidable(info.eventPosition.game));
-    add(MyCircle(info.eventPosition.game, 200, Paint()..color = Colors.red));
+  Future<void> onLoad() async {
+    add(ScreenHitbox());
+    add(MyCircle(Vector2(size.x / 2, size.y / 2)));
   }
 }
 
 class MyCircle extends PositionComponent
     with HasGameRef<CirclesExample>, CollisionCallbacks {
-  late Vector2 velocity;
-  final color = Colors.blue;
-
-  MyCircle(Vector2 pos, double radius, Paint paint)
-      : _radius = radius,
-        _paint = paint,
-        super(
-          position: pos,
-          size: Vector2.all(200),
-          anchor: Anchor.center,
-        );
-
-  final double _radius;
-  final Paint _paint;
+  @override
+  MyCircle(pos) : super(position: pos);
+  Future<void> onLoad() async {
+    add(CircleArc(Vector2(size.x / 2, size.y / 2), 90, 90, 200, Colors.red));
+    add(CircleArc(Vector2(size.x / 2, size.y / 2), 180, 90, 200, Colors.green));
+    add(CircleArc(Vector2(size.x / 2, size.y / 2), 270, 90, 200, Colors.blue));
+    add(CircleArc(Vector2(size.x / 2, size.y / 2), 0, 90, 200, Colors.yellow));
+  }
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    canvas.drawCircle(Offset(_radius, _radius), _radius, _paint);
+    angle += 2 * 0.01745329252;
   }
 }
 
-class MyCollidable extends PositionComponent
+class CircleArc extends PositionComponent
     with HasGameRef<CirclesExample>, CollisionCallbacks {
-  late Vector2 velocity;
-  final _collisionColor = Colors.amber;
-  final _defaultColor = Colors.cyan;
+  final double startAngle;
+  final double sweepAngle;
+  final double radius;
+  final Color color;
   late ShapeHitbox hitbox;
 
-  MyCollidable(Vector2 position)
-      : super(
-          position: position,
-          size: Vector2.all(100),
-          anchor: Anchor.center,
-        );
+  CircleArc(
+      Vector2 pos, this.startAngle, this.sweepAngle, this.radius, this.color)
+      : super(position: pos);
 
   @override
   Future<void> onLoad() async {
-    final defaultPaint = Paint()
-      ..color = _defaultColor
+    final paint = Paint()
+      ..color = Colors.white
       ..style = PaintingStyle.stroke;
-    hitbox = CircleHitbox()
-      ..paint = defaultPaint
-      ..renderShape = true;
+    hitbox = PolygonHitbox(calcVertices())
+      ..paint = paint
+      ..renderShape = false;
     add(hitbox);
-    final center = gameRef.size / 2;
-    velocity = (center - position)..scaleTo(150);
   }
 
   @override
-  void update(double dt) {
-    super.update(dt);
-    position.add(velocity * dt);
+  void render(Canvas canvas) {
+    super.render(canvas);
+
+    canvas.drawArc(
+      Rect.fromCenter(
+          center: const Offset(0, 0), width: radius, height: radius),
+      startAngle * 0.01745329252,
+      sweepAngle * 0.01745329252,
+      false,
+      Paint()
+        ..color = color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 20,
+    );
   }
 
-  @override
-  void onCollisionStart(
-    Set<Vector2> intersectionPoints,
-    PositionComponent other,
-  ) {
-    super.onCollisionStart(intersectionPoints, other);
-    hitbox.paint.color = _collisionColor;
-    if (other is ScreenHitbox) {
-      removeFromParent();
-      return;
+  List<Vector2> calcVertices() {
+    List<Vector2> inner = [];
+    List<Vector2> outer = [];
+
+    for (double i = startAngle; i <= sweepAngle + startAngle; i += 10) {
+      inner.add(Vector2((radius / 2 - 10) * cos(i * 0.01745329252),
+          (radius / 2 - 10) * sin(i * 0.01745329252)));
     }
-  }
-
-  @override
-  void onCollisionEnd(PositionComponent other) {
-    super.onCollisionEnd(other);
-    if (!isColliding) {
-      hitbox.paint.color = _defaultColor;
+    for (double i = startAngle; i <= sweepAngle + startAngle; i += 10) {
+      outer.add(Vector2((radius / 2 + 10) * cos(i * 0.01745329252),
+          (radius / 2 + 10) * sin(i * 0.01745329252)));
     }
+    outer = List.from(outer.reversed);
+    return inner + outer;
   }
 }
