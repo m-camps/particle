@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:particle/config/colors.dart';
-import 'collision.dart';
+import 'package:particle/game.dart';
 import 'dart:developer' as log;
 
 void main() {
@@ -89,12 +89,12 @@ class MyGamePage extends StatefulWidget {
 }
 
 class _MyGamePageState extends State<MyGamePage> {
-  late final CirclesExample _game;
+  late final MainGame _game;
 
   @override
   void initState() {
     super.initState();
-    _game = CirclesExample();
+    _game = MainGame();
   }
 
   @override

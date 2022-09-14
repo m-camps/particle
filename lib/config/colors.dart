@@ -38,3 +38,9 @@ class MyColors {
     settings = "dark";
   }
 }
+
+Paint defaultPaint(Color color, PaintingStyle style) {
+  return (Paint()
+    ..color = color
+    ..style = style);
+}

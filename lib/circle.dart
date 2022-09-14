@@ -1,43 +1,15 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/game.dart';
-import 'package:flame/input.dart';
 import 'package:flutter/material.dart' hide Image, Draggable;
 import 'dart:math';
 // ignore: unused_import
 import 'dart:developer' as log;
 import 'package:particle/config/colors.dart';
 import 'package:particle/config/config.dart';
-
-class CirclesExample extends FlameGame with HasCollisionDetection, TapDetector {
-  @override
-  Future<void> onLoad() async {
-    add(BackGround(Vector2(size.x / 2, size.y / 2)));
-    add(ScreenHitbox());
-    add(FullCircle(Vector2(size.x / 2, size.y / 2), 400, 6));
-  }
-}
-
-class BackGround extends PositionComponent {
-  BackGround(pos)
-      : super(
-          position: pos,
-        );
-  @override
-  void render(Canvas canvas) {
-    var paint = Paint()..color = theme.bg;
-    super.render(canvas);
-    canvas.drawRect(
-        Rect.fromCenter(
-            center: const Offset(0, 0),
-            width: position.x * 2,
-            height: position.y * 2),
-        paint);
-  }
-}
+import 'package:particle/game.dart';
 
 class FullCircle extends PositionComponent
-    with HasGameRef<CirclesExample>, CollisionCallbacks {
+    with HasGameRef<MainGame>, CollisionCallbacks {
   final double radius;
   final double segments;
   late List<Color> colors;
@@ -75,7 +47,7 @@ class FullCircle extends PositionComponent
 }
 
 class CirclePart extends PositionComponent
-    with HasGameRef<CirclesExample>, CollisionCallbacks {
+    with HasGameRef<MainGame>, CollisionCallbacks {
   final double startAngle;
   final double sweepAngle;
   final double radius;
