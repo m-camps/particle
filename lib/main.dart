@@ -2,7 +2,9 @@ import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
+import 'package:particle/config/colors.dart';
 import 'collision.dart';
+import 'dart:developer' as log;
 
 void main() {
   runApp(const MyApp());
@@ -19,11 +21,12 @@ class MyApp extends StatelessWidget {
       enabled: kIsWeb,
       builder: (context) {
         return MaterialApp(
-          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          title: 'Particle Early Acces',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const MyHomePage(title: 'Flutter Demo Home Page'),
+          home: const MyHomePage(title: 'Particle Early Acces'),
         );
       },
     );
@@ -45,6 +48,31 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          TextButton(
+            child: Icon(
+              (theme.settings == "dark")
+                  ? Icons.light_mode_outlined
+                  : Icons.light_mode,
+              color: theme.otherBg,
+            ),
+            onPressed: () => {
+              if (theme.settings == "light")
+                {
+                  setState(() {
+                    theme.setDark();
+                  }),
+                }
+              else
+                {
+                  setState(() {
+                    theme.setLight();
+                  }),
+                },
+              log.log(theme.settings)
+            },
+          )
+        ],
       ),
       body: const Center(
         child: MyGamePage(),
