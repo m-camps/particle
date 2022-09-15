@@ -4,7 +4,6 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:particle/circle.dart';
 import 'package:particle/config/colors.dart';
-import 'package:particle/config/globals.dart';
 import 'package:particle/particle.dart';
 // ignore: unused_import
 import 'dart:developer' as log;
@@ -17,7 +16,7 @@ class MainGame extends FlameGame with HasCollisionDetection, TapDetector {
     particle = Particle(size.x * 0.18);
     add(BackGround());
     add(particle);
-    add(FullCircle(size.x * 0.75, 3));
+    add(FullCircle(size.x * 0.75, 10));
     add(Score(particle));
   }
 

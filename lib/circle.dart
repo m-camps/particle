@@ -21,13 +21,13 @@ class FullCircle extends PositionComponent
   @override
   Future<void> onLoad() async {
     position = gameRef.size / 2;
+    createCircle();
   }
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    removeAll(children);
-    createCircle();
+
     angle += 1.5 * 0.01745329252;
   }
 
@@ -44,8 +44,8 @@ class FullCircle extends PositionComponent
     final Vector2 centerPos = Vector2(size.x / 2, size.y / 2);
     int colorIndex = 0;
     for (double i = 0; i < 360; i += step) {
-      add(CirclePart(
-          centerPos, i, step, radius, colors.elementAt(colorIndex), 40));
+      add(CirclePart(centerPos, i, step, radius,
+          colors.elementAt(Random().nextInt(6)), 40));
       colorIndex++;
     }
   }
@@ -66,9 +66,11 @@ class CirclePart extends PositionComponent
 
   @override
   Future<void> onLoad() async {
+    final test = makeHitbox();
     hitbox = PolygonHitbox(makeHitbox())
       ..paint = config.hitboxPaint
       ..renderShape = config.showHitbox;
+    log.log(test.toString());
     add(hitbox);
   }
 
@@ -91,10 +93,14 @@ class CirclePart extends PositionComponent
   List<Vector2> makeHitbox() {
     List<Vector2> inner = [];
     List<Vector2> outer = [];
+    double res = 0;
 
-    for (double i = startAngle;
-        i <= sweepAngle + startAngle;
-        i += config.hitboxRes) {
+    if (sweepAngle > 36) {
+      res = sweepAngle / config.resTable[sweepAngle.round()]!;
+    } else {
+      res = sweepAngle / 2;
+    }
+    for (double i = startAngle; i <= sweepAngle + 1 + startAngle; i += res) {
       inner.add(Vector2((radius / 2 - (stroke / 2)) * cos(i * 0.01745329252),
           (radius / 2 - (stroke / 2)) * sin(i * 0.01745329252)));
       outer.add(Vector2((radius / 2 + (stroke / 2)) * cos(i * 0.01745329252),

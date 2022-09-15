@@ -23,7 +23,7 @@ class Particle extends PositionComponent
   late ShapeHitbox hitbox;
   double score = 0;
 
-  Particle(this.radius) {}
+  Particle(this.radius);
   @override
   Future<void> onLoad() async {
     resetParticle();
