@@ -1,12 +1,13 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart' hide Image, Draggable;
+import 'package:flutter/material.dart';
 import 'dart:math';
-// ignore: unused_import
-import 'dart:developer' as log;
 import 'package:particle/config/colors.dart';
 import 'package:particle/config/config.dart';
 import 'package:particle/game.dart';
+
+// ignore: unused_import
+import 'dart:developer' as log;
 
 class FullCircle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
@@ -15,7 +16,20 @@ class FullCircle extends PositionComponent
   late List<Color> colors;
 
   @override
-  FullCircle(pos, this.radius, this.segments) : super(position: pos);
+  FullCircle(this.radius, this.segments);
+
+  @override
+  Future<void> onLoad() async {
+    position = gameRef.size / 2;
+  }
+
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+    removeAll(children);
+    createCircle();
+    angle += 1.5 * 0.01745329252;
+  }
 
   createCircle() {
     colors = [
@@ -35,15 +49,6 @@ class FullCircle extends PositionComponent
       colorIndex++;
     }
   }
-
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-    removeAll(children);
-    createCircle();
-    //Rotation
-    angle += 1.5 * 0.01745329252;
-  }
 }
 
 class CirclePart extends PositionComponent
@@ -54,9 +59,6 @@ class CirclePart extends PositionComponent
   final Color color;
   final double stroke;
   late ShapeHitbox hitbox;
-  final hitboxPaint = Paint()
-    ..color = Colors.white
-    ..style = PaintingStyle.stroke;
 
   CirclePart(Vector2 pos, this.startAngle, this.sweepAngle, this.radius,
       this.color, this.stroke)
@@ -65,7 +67,7 @@ class CirclePart extends PositionComponent
   @override
   Future<void> onLoad() async {
     hitbox = PolygonHitbox(makeHitbox())
-      ..paint = hitboxPaint
+      ..paint = config.hitboxPaint
       ..renderShape = config.showHitbox;
     add(hitbox);
   }

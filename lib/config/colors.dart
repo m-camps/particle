@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 final theme = MyColors();
 
@@ -14,6 +14,9 @@ class MyColors {
 
   String settings = "light";
 
+  MyColors() {
+    setDark();
+  }
   void setLight() {
     bg = const Color(0XffEDE8BC);
     otherBg = const Color(0Xff373A49);

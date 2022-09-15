@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:particle/config/colors.dart';
 import 'package:particle/game.dart';
+// ignore: unused_import
 import 'dart:developer' as log;
 
 void main() {
@@ -69,7 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     theme.setLight();
                   }),
                 },
-              log.log(theme.settings)
             },
           )
         ],
