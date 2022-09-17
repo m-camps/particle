@@ -2,7 +2,6 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:particle/config/colors.dart';
 import 'package:particle/config/config.dart';
 import 'package:particle/game.dart';
 
@@ -12,12 +11,15 @@ import 'dart:developer' as log;
 class FullCircle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
   final double radius;
-  final double segments;
-  late List<Color> colors;
+  final List<Color> colors;
 
   @override
-  FullCircle(this.radius, this.segments);
+  FullCircle(this.radius, this.colors);
 
+  FullCircle.fromJson() {
+    radius = 0;
+    colors = [theme.blue];
+  }
   @override
   Future<void> onLoad() async {
     position = gameRef.size / 2;
@@ -25,27 +27,19 @@ class FullCircle extends PositionComponent
   }
 
   @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-
+  void update(dt) {
     angle += 1.5 * 0.01745329252;
   }
 
   createCircle() {
-    colors = [
-      theme.blue,
-      theme.red,
-      theme.green,
-      theme.yellow,
-      theme.purple,
-      theme.brown,
-    ];
+    final segments = colors.length;
     final step = 360 / segments;
     final Vector2 centerPos = Vector2(size.x / 2, size.y / 2);
-    int colorIndex = 0;
+    var colorIndex = 0;
+
     for (double i = 0; i < 360; i += step) {
-      add(CirclePart(centerPos, i, step, radius,
-          colors.elementAt(Random().nextInt(6)), 40));
+      add(CirclePart(
+          centerPos, i, step, radius, colors.elementAt(colorIndex), 40));
       colorIndex++;
     }
   }

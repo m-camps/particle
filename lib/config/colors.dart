@@ -11,6 +11,7 @@ class MyColors {
   Color purple = const Color(0Xff9E4F9E);
   Color red = const Color(0XffEA5050);
   Color brown = const Color(0Xff874F45);
+  Color empty = const Color(0x00000000);
 
   String settings = "light";
 

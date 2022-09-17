@@ -13,7 +13,7 @@ class Particle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
   late Vector2 vel;
   late Vector2 prevPos;
-  late double angleVel;
+  late double angleVel = 0;
 
   late Vector2 middle;
   double radius = 120;
@@ -50,15 +50,20 @@ class Particle extends PositionComponent
   void resetParticle() {
     vel = Vector2(0, 0);
     prevPos = Vector2(0, 0);
-    angleVel = 3; /* degree/tick */
     middle = gameRef.size / 2;
+    angleVel *= 1.2;
     tapped = false;
+  }
+
+  void resetGame() {
+    resetParticle();
+    angleVel = 3; /* degree/tick */
   }
 
   @override
   void onGameResize(Vector2 size) {
     super.onGameResize(size);
-    resetParticle();
+    resetGame();
   }
 
   @override
@@ -81,9 +86,10 @@ class Particle extends PositionComponent
         console.log("Score");
         resetParticle();
         score += 1;
+      } else if (other.color == theme.empty) {
       } else {
         console.log("Reset");
-        resetParticle();
+        resetGame();
         score = 0;
       }
     }

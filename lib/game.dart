@@ -16,7 +16,8 @@ class MainGame extends FlameGame with HasCollisionDetection, TapDetector {
     particle = Particle(size.x * 0.18);
     add(BackGround());
     add(particle);
-    add(FullCircle(size.x * 0.75, 10));
+    add(FullCircle(400, [theme.red, theme.blue, theme.green]));
+    // add(FullCircle(500, [theme.red, theme.blue, theme.empty]));
     add(Score(particle));
   }
 
