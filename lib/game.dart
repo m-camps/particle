@@ -9,15 +9,12 @@ import 'package:particle/particle.dart';
 import 'dart:developer' as log;
 
 class MainGame extends FlameGame with HasCollisionDetection, TapDetector {
-  late Particle particle;
+  late Particle particle = Particle(80);
   late final TextComponent score;
   @override
   Future<void> onLoad() async {
-    particle = Particle(size.x * 0.18);
     add(BackGround());
-    add(particle);
-    add(FullCircle(400, [theme.red, theme.blue, theme.green]));
-    // add(FullCircle(500, [theme.red, theme.blue, theme.empty]));
+    add(ScaleWrapper(particle));
     add(Score(particle));
   }
 
@@ -32,10 +29,31 @@ class MainGame extends FlameGame with HasCollisionDetection, TapDetector {
   }
 }
 
-class BackGround extends PositionComponent with HasGameRef<MainGame> {
+class ScaleWrapper extends PositionComponent with HasGameRef<MainGame> {
+  final Particle particle;
+
+  ScaleWrapper(this.particle);
+
   @override
   Future<void> onLoad() async {
-    position = gameRef.size / 2;
+    add(particle);
+    add(FullCircle(400, [theme.green, theme.blue, theme.red]));
+    // add(FullCircle.fromJson(await readJson('levels/level1.json')));
+  }
+
+  @override
+  void onGameResize(Vector2 size) {
+    super.onGameResize(size);
+    position = size / 2;
+    scale = Vector2(gameRef.size.x / 500, gameRef.size.x / 500);
+  }
+}
+
+class BackGround extends PositionComponent with HasGameRef<MainGame> {
+  @override
+  void onGameResize(Vector2 size) {
+    super.onGameResize(size);
+    position = size / 2;
   }
 
   @override
@@ -45,20 +63,21 @@ class BackGround extends PositionComponent with HasGameRef<MainGame> {
     canvas.drawRect(
         Rect.fromCenter(
             center: const Offset(0, 0),
-            width: position.x * 2,
-            height: position.y * 2),
+            width: gameRef.size.x,
+            height: gameRef.size.y),
         paint);
   }
 }
 
 class Score extends TextComponent with HasGameRef<MainGame> {
-  Particle particle;
+  final Particle particle;
   Score(this.particle);
 
   @override
-  Future<void>? onLoad() async {
-    x = gameRef.size.x / 2;
-    y = gameRef.size.y * 0.10;
+  void onGameResize(Vector2 size) {
+    super.onGameResize(size);
+    position.x = size.x / 2;
+    position.y = size.y * 0.1;
   }
 
   @override

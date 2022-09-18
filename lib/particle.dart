@@ -15,8 +15,7 @@ class Particle extends PositionComponent
   late Vector2 prevPos;
   late double angleVel = 0;
 
-  late Vector2 middle;
-  double radius = 120;
+  double radius;
   double radian = 0;
   late Color color;
   bool tapped = false;
@@ -50,8 +49,7 @@ class Particle extends PositionComponent
   void resetParticle() {
     vel = Vector2(0, 0);
     prevPos = Vector2(0, 0);
-    middle = gameRef.size / 2;
-    angleVel *= 1.2;
+    angleVel += 0.1;
     tapped = false;
   }
 
@@ -71,8 +69,7 @@ class Particle extends PositionComponent
     if (tapped == false) {
       radian += angleVel * -0.01745329252;
       prevPos = Vector2(position.x, position.y);
-      position = Vector2(
-          radius * cos(radian) + middle.x, radius * sin(radian) + middle.y);
+      position = Vector2(radius * cos(radian), radius * sin(radian));
     } else {
       position = Vector2(position.x + vel.x, position.y + vel.y);
     }

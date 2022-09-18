@@ -11,20 +11,24 @@ import 'dart:developer' as log;
 class FullCircle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
   final double radius;
-  final List<Color> colors;
+  final List<dynamic> colors;
 
   @override
   FullCircle(this.radius, this.colors);
 
-  FullCircle.fromJson() {
-    radius = 0;
-    colors = [theme.blue];
-  }
   @override
   Future<void> onLoad() async {
-    position = gameRef.size / 2;
     createCircle();
   }
+
+  FullCircle.fromJson(Map<String, dynamic> json)
+      : radius = json['radius'],
+        colors = json['colors'];
+
+  Map<String, dynamic> toJson() => {
+        'radius': radius,
+        'colors': colors,
+      };
 
   @override
   void update(dt) {
@@ -37,6 +41,11 @@ class FullCircle extends PositionComponent
     final Vector2 centerPos = Vector2(size.x / 2, size.y / 2);
     var colorIndex = 0;
 
+    // for (double i = 0; i < 360; i += step) {
+    //   add(CirclePart(centerPos, i, step, radius,
+    //       Color(int.parse(colors.elementAt(colorIndex))), 40));
+    //   colorIndex++;
+    // }
     for (double i = 0; i < 360; i += step) {
       add(CirclePart(
           centerPos, i, step, radius, colors.elementAt(colorIndex), 40));
@@ -60,11 +69,9 @@ class CirclePart extends PositionComponent
 
   @override
   Future<void> onLoad() async {
-    final test = makeHitbox();
     hitbox = PolygonHitbox(makeHitbox())
       ..paint = config.hitboxPaint
       ..renderShape = config.showHitbox;
-    log.log(test.toString());
     add(hitbox);
   }
 
