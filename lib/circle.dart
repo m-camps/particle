@@ -12,6 +12,8 @@ class FullCircle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
   final double radius;
   final List<dynamic> colors;
+  double fps = 0;
+  double totalFps = 0;
 
   @override
   FullCircle(this.radius, this.colors);
