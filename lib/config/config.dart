@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 final config = Config();
 
 class Config {
-  final bool showHitbox = false;
+  final bool showHitbox = true;
   final double hitboxRes = 4;
   final Paint hitboxPaint = Paint()
     ..color = Colors.white

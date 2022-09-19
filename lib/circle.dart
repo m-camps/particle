@@ -37,9 +37,8 @@ class FullCircle extends PositionComponent
 
   @override
   void update(dt) {
-    final angleMod = calcFpsModifier(global.fps.fpsComponent.fps) * 1.5;
-    // log.log(angleMod.toString());
-    angle += angleMod * 0.01745329252;
+    final step = 100 * dt;
+    angle += step * 0.01745329252;
   }
 
   createCircle() {

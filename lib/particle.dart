@@ -10,8 +10,6 @@ import 'package:particle/game.dart';
 // ignore: unused_import
 import 'dart:developer' as console;
 
-import 'package:particle/util.dart';
-
 class Particle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
   late Vector2 vel;
@@ -52,13 +50,13 @@ class Particle extends PositionComponent
   void resetParticle() {
     vel = Vector2(0, 0);
     prevPos = Vector2(0, 0);
-    angleVel += 0.1;
+    angleVel += 2;
     tapped = false;
   }
 
   void resetGame() {
     resetParticle();
-    angleVel = 3; /* degree/tick */
+    angleVel = 150; /* degree/tick */
   }
 
   @override
@@ -69,9 +67,9 @@ class Particle extends PositionComponent
 
   @override
   void update(double dt) {
-    final angleVelMod = calcFpsModifier(global.fps.fpsComponent.fps) * angleVel;
+    final stepSpeed = dt * angleVel;
     if (tapped == false) {
-      radian += angleVelMod * -0.01745329252;
+      radian += stepSpeed * -0.01745329252;
       prevPos = Vector2(position.x, position.y);
       position = Vector2(radius * cos(radian), radius * sin(radian));
     } else {
