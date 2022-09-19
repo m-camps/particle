@@ -14,6 +14,7 @@ class Particle extends PositionComponent
   late Vector2 vel;
   late Vector2 prevPos;
   late double angleVel = 0;
+  late FpsComponent fps = FpsComponent();
 
   double radius;
   double radian = 0;
@@ -30,6 +31,7 @@ class Particle extends PositionComponent
       ..paint = config.hitboxPaint
       ..renderShape = config.showHitbox;
     add(hitbox);
+    add(fps);
   }
 
   @override
@@ -66,8 +68,10 @@ class Particle extends PositionComponent
 
   @override
   void update(double dt) {
+    final angleVelMod = angleVel * fps.fps / 60;
+    // console.log(angleVel.toString());
     if (tapped == false) {
-      radian += angleVel * -0.01745329252;
+      radian += angleVelMod * -0.01745329252;
       prevPos = Vector2(position.x, position.y);
       position = Vector2(radius * cos(radian), radius * sin(radian));
     } else {
