@@ -5,16 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:particle/circle.dart';
 import 'package:particle/config/colors.dart';
 import 'package:particle/config/config.dart';
+import 'package:particle/config/globals.dart';
 import 'package:particle/game.dart';
 // ignore: unused_import
 import 'dart:developer' as console;
+
+import 'package:particle/util.dart';
 
 class Particle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
   late Vector2 vel;
   late Vector2 prevPos;
   late double angleVel = 0;
-  late FpsComponent fps = FpsComponent(windowSize: 1);
 
   double radius;
   double radian = 0;
@@ -31,7 +33,6 @@ class Particle extends PositionComponent
       ..paint = config.hitboxPaint
       ..renderShape = config.showHitbox;
     add(hitbox);
-    add(fps);
   }
 
   @override
@@ -68,8 +69,7 @@ class Particle extends PositionComponent
 
   @override
   void update(double dt) {
-    double angleVelMod = 1;
-    if (fps.fps != 0) angleVelMod = angleVel * 60 / fps.fps;
+    final angleVelMod = calcFpsModifier(global.fps.fpsComponent.fps) * angleVel;
     if (tapped == false) {
       radian += angleVelMod * -0.01745329252;
       prevPos = Vector2(position.x, position.y);

@@ -4,11 +4,10 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:particle/circle.dart';
 import 'package:particle/config/colors.dart';
+import 'package:particle/config/globals.dart';
 import 'package:particle/particle.dart';
 // ignore: unused_import
 import 'dart:developer' as log;
-
-import 'package:particle/util.dart';
 
 class MainGame extends FlameGame with HasCollisionDetection, TapDetector {
   late Particle particle = Particle(80);
@@ -18,7 +17,7 @@ class MainGame extends FlameGame with HasCollisionDetection, TapDetector {
     add(BackGround());
     add(ScaleWrapper(particle));
     add(Score(particle));
-    add(FpsTextComponent(windowSize: 1));
+    add(global.fps);
   }
 
   @override
@@ -29,12 +28,6 @@ class MainGame extends FlameGame with HasCollisionDetection, TapDetector {
       particle.vel.y = particle.position.y - particle.prevPos.y;
       particle.tapped = true;
     }
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
-    fpsCounter.update(dt);
   }
 }
 
@@ -95,15 +88,5 @@ class Score extends TextComponent with HasGameRef<MainGame> {
     textRenderer =
         TextPaint(style: TextStyle(color: theme.otherBg, fontSize: 30));
     text = particle.score.toString();
-  }
-}
-
-class FPS extends TextComponent with HasGameRef<MainGame> {
-  @override
-  void update(double dt) {
-    super.update(dt);
-    textRenderer =
-        TextPaint(style: TextStyle(color: theme.otherBg, fontSize: 16));
-    text = "fps: ${fpsCounter.lastFps}";
   }
 }

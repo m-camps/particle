@@ -3,10 +3,13 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:particle/config/config.dart';
+import 'package:particle/config/globals.dart';
 import 'package:particle/game.dart';
 
 // ignore: unused_import
 import 'dart:developer' as log;
+
+import 'package:particle/util.dart';
 
 class FullCircle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
@@ -34,7 +37,9 @@ class FullCircle extends PositionComponent
 
   @override
   void update(dt) {
-    angle += 1.5 * 0.01745329252;
+    final angleMod = calcFpsModifier(global.fps.fpsComponent.fps) * 1.5;
+    // log.log(angleMod.toString());
+    angle += angleMod * 0.01745329252;
   }
 
   createCircle() {
