@@ -9,8 +9,6 @@ import 'package:particle/game.dart';
 // ignore: unused_import
 import 'dart:developer' as log;
 
-import 'package:particle/util.dart';
-
 class FullCircle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
   final double radius;
