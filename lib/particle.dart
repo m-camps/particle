@@ -14,7 +14,7 @@ class Particle extends PositionComponent
   late Vector2 vel;
   late Vector2 prevPos;
   late double angleVel = 0;
-  late FpsComponent fps = FpsComponent();
+  late FpsComponent fps = FpsComponent(windowSize: 1);
 
   double radius;
   double radian = 0;
@@ -68,8 +68,8 @@ class Particle extends PositionComponent
 
   @override
   void update(double dt) {
-    final angleVelMod = angleVel * fps.fps / 60;
-    // console.log(angleVel.toString());
+    double angleVelMod = 1;
+    if (fps.fps != 0) angleVelMod = angleVel * 60 / fps.fps;
     if (tapped == false) {
       radian += angleVelMod * -0.01745329252;
       prevPos = Vector2(position.x, position.y);

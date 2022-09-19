@@ -18,7 +18,7 @@ class MainGame extends FlameGame with HasCollisionDetection, TapDetector {
     add(BackGround());
     add(ScaleWrapper(particle));
     add(Score(particle));
-    add(FpsTextComponent(windowSize: 120));
+    add(FpsTextComponent(windowSize: 1));
   }
 
   @override
