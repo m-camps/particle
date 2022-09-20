@@ -3,11 +3,12 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:particle/config/config.dart';
-import 'package:particle/config/globals.dart';
 import 'package:particle/game.dart';
 
 // ignore: unused_import
 import 'dart:developer' as log;
+
+import 'config/constants.dart';
 
 class FullCircle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
@@ -101,7 +102,7 @@ class CirclePart extends PositionComponent
     double res = 0;
 
     if (sweepAngle > 36) {
-      res = sweepAngle / config.resTable[sweepAngle.round()]!;
+      res = sweepAngle / resTable[sweepAngle.round()]!;
     } else {
       res = sweepAngle / 2;
     }

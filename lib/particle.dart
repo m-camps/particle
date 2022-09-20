@@ -5,29 +5,44 @@ import 'package:flutter/material.dart';
 import 'package:particle/circle.dart';
 import 'package:particle/config/colors.dart';
 import 'package:particle/config/config.dart';
-import 'package:particle/config/globals.dart';
+import 'package:particle/config/constants.dart';
 import 'package:particle/game.dart';
-// ignore: unused_import
 import 'dart:developer' as console;
 
 class Particle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
-  late Vector2 vel;
+  // Variables
+  late Vector2 exitVel;
   late Vector2 prevPos;
-  late double angleVel = 0;
-
-  double radius;
-  double radian = 0;
-  late Color color;
+  late double vel = 0;
+  late double radian;
+  late Color selColor;
   bool tapped = false;
-  late ShapeHitbox hitbox;
   double score = 0;
 
-  Particle(this.radius);
+  // Game Variables
+  double pathRadius = 100;
+  double particleSize = 10;
+  double speedStart = 100;
+  double speedMultiplier = 2;
+  double direction = -1;
+  List<Color> color = [theme.blue];
+
+  // Hitbox
+  late ShapeHitbox hitbox;
+
+  Particle.fromJson(Map<String, dynamic> json)
+      : pathRadius = json['pathRadius'],
+        particleSize = json['particleSize'],
+        speedStart = json['speedStart'],
+        speedMultiplier = json['speedMultiplier'],
+        direction = json['direction'],
+        color = theme.parseColors(json['color']);
+
   @override
   Future<void> onLoad() async {
-    resetParticle();
-    hitbox = CircleHitbox(radius: 10, anchor: Anchor.center)
+    resetGame();
+    hitbox = CircleHitbox(radius: particleSize, anchor: Anchor.center)
       ..paint = config.hitboxPaint
       ..renderShape = config.showHitbox;
     add(hitbox);
@@ -36,27 +51,28 @@ class Particle extends PositionComponent
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    color = theme.blue;
     canvas.drawCircle(
       const Offset(0, 0),
-      10,
+      particleSize,
       defaultPaint(
-        color,
+        selColor,
         PaintingStyle.fill,
       ),
     );
   }
 
   void resetParticle() {
-    vel = Vector2(0, 0);
+    exitVel = Vector2(0, 0);
     prevPos = Vector2(0, 0);
-    angleVel += 2;
     tapped = false;
+    vel += speedMultiplier;
+    selColor = color.elementAt(Random().nextInt(color.length));
   }
 
   void resetGame() {
     resetParticle();
-    angleVel = 150; /* degree/tick */
+    radian = 0;
+    vel = speedStart;
   }
 
   @override
@@ -67,13 +83,13 @@ class Particle extends PositionComponent
 
   @override
   void update(double dt) {
-    final stepSpeed = dt * angleVel;
+    final stepSpeed = dt * vel;
     if (tapped == false) {
-      radian += stepSpeed * -0.01745329252;
+      radian += stepSpeed * direction * degToRad;
       prevPos = Vector2(position.x, position.y);
-      position = Vector2(radius * cos(radian), radius * sin(radian));
+      position = Vector2(pathRadius * cos(radian), pathRadius * sin(radian));
     } else {
-      position = Vector2(position.x + vel.x, position.y + vel.y);
+      position = Vector2(position.x + exitVel.x, position.y + exitVel.y);
     }
   }
 
@@ -81,7 +97,7 @@ class Particle extends PositionComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
     if (other is CirclePart) {
-      if (other.color == color) {
+      if (other.color == selColor) {
         console.log("Score");
         resetParticle();
         score += 1;

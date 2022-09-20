@@ -1,4 +1,24 @@
 {
-	"radius": 400, 
-	"colors": ["0xfff3706b", "0xff4694ae", "0xff7aca5e", "0xff7aca5f"]
+	"Particle": {
+		"pathRadius": 100,
+		"particleSize": 10,
+		"speedStart": 200,
+		"speedMultiplier": 10,
+		"direction": -1,
+		"color": ["red", "blue", "green"]
+	},
+	"Circle": [
+		{
+			"radius": 400, 
+			"strokeWidth": 20,
+			"direction": 1,
+			"colors": ["red", "blue", "green"]
+		},
+		{
+			"radius": 200,
+			"strokeWidth": 20,
+			"direction": 1,
+			"colors": ["red", "blue", "green"]
+		}
+	]
 }

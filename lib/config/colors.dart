@@ -41,6 +41,50 @@ class MyColors {
     brown = const Color(0Xff935A4D);
     settings = "dark";
   }
+
+  List<Color> parseColors(List<dynamic> colors) {
+    List<Color> ret = [];
+    for (var i = 0; i < colors.length; i++) {
+      ret.add(getColor(colors[i]));
+    }
+    return (ret);
+  }
+
+  Color getColor(String color) {
+    late Color ret;
+    switch (color) {
+      case "bg":
+        ret = bg;
+        break;
+      case "otherBg":
+        ret = otherBg;
+        break;
+      case "blue":
+        ret = blue;
+        break;
+      case "green":
+        ret = green;
+        break;
+      case "yellow":
+        ret = yellow;
+        break;
+      case "purple":
+        ret = purple;
+        break;
+      case "red":
+        ret = red;
+        break;
+      case "brown":
+        ret = brown;
+        break;
+      case "empty":
+        ret = empty;
+        break;
+      default:
+        ret = empty;
+    }
+    return ret;
+  }
 }
 
 Paint defaultPaint(Color color, PaintingStyle style) {

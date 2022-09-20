@@ -5,27 +5,36 @@ import 'package:flutter/material.dart';
 import 'package:particle/circle.dart';
 import 'package:particle/config/colors.dart';
 import 'package:particle/config/globals.dart';
+import 'package:particle/json.dart';
 import 'package:particle/particle.dart';
 // ignore: unused_import
 import 'dart:developer' as log;
 
 class MainGame extends FlameGame with HasCollisionDetection, TapDetector {
-  late Particle particle = Particle(80);
-  late final TextComponent score;
+  late Particle particle;
+  late ScaleWrapper wrapper;
+
   @override
   Future<void> onLoad() async {
+    await buildGame();
     add(BackGround());
     add(ScaleWrapper(particle));
     add(Score(particle));
     add(global.fps);
   }
 
+  Future<void> buildGame() async {
+    final data = await readJson("levels/level1.json");
+    log.log(data['Particle'].toString());
+    particle = Particle.fromJson(data['Particle']);
+  }
+
   @override
   void onTap() {
     super.onTap();
     if (particle.tapped == false) {
-      particle.vel.x = particle.position.x - particle.prevPos.x;
-      particle.vel.y = particle.position.y - particle.prevPos.y;
+      particle.exitVel.x = particle.position.x - particle.prevPos.x;
+      particle.exitVel.y = particle.position.y - particle.prevPos.y;
       particle.tapped = true;
     }
   }
@@ -35,6 +44,9 @@ class ScaleWrapper extends PositionComponent with HasGameRef<MainGame> {
   final Particle particle;
 
   ScaleWrapper(this.particle);
+
+  ScaleWrapper.fromJson(Map<String, dynamic> json)
+      : particle = json['particle'];
 
   @override
   Future<void> onLoad() async {
@@ -90,3 +102,13 @@ class Score extends TextComponent with HasGameRef<MainGame> {
     text = particle.score.toString();
   }
 }
+
+// class Debug extends TextComponent with HasGameRef<MainGame> {
+//   final Particle particle;
+//   Debug(this.particle);
+
+//   void update(double dt) {
+//     super.update(dt);
+//     textRenderer = TextPaint(style)
+//   }
+// }
