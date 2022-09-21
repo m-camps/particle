@@ -8,19 +8,19 @@
 		"color": ["red", "blue", "green"]
 	},
 	"Circles": [
-		{
-			"circleRadius": 400, 
-			"velocity": 100,
-			"strokeWidth": 20,
-			"direction": -1,
-			"colors": ["empty", "empty", "green","empty", "empty", "green"]
-		},
+		// {
+		// 	"circleRadius": 400, 
+		// 	"velocity": 100,
+		// 	"strokeWidth": 20,
+		// 	"direction": -1,
+		// 	"colors": ["empty", "empty", "green"]
+		// },
 		{
 			"circleRadius": 500,
 			"velocity": 100,
 			"strokeWidth": 20,
 			"direction": 1,
-			"colors": ["red", "red", "green","green","green","green"]
+			"colors": ["red", "blue", "green"]
 		}
 	]
 }

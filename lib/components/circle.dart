@@ -1,24 +1,23 @@
+import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:particle/config/colors.dart';
 import 'package:particle/config/config.dart';
+import 'package:particle/config/constants.dart';
 import 'package:particle/game.dart';
-
 // ignore: unused_import
 import 'dart:developer' as log;
 
-import 'config/constants.dart';
-
 class FullCircle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
-  final double radius;
-  final List<dynamic> colors;
-  double fps = 0;
-  double totalFps = 0;
+  // Game Variables
+  double circleRadius = 400;
+  double strokeWidth = 10;
+  double direction = 1;
+  List<Color> colors = [theme.blue, theme.red];
 
-  @override
-  FullCircle(this.radius, this.colors);
+  FullCircle();
 
   @override
   Future<void> onLoad() async {
@@ -26,18 +25,15 @@ class FullCircle extends PositionComponent
   }
 
   FullCircle.fromJson(Map<String, dynamic> json)
-      : radius = json['radius'],
-        colors = json['colors'];
-
-  Map<String, dynamic> toJson() => {
-        'radius': radius,
-        'colors': colors,
-      };
+      : circleRadius = json['circleRadius'],
+        strokeWidth = json['strokeWidth'],
+        direction = json['direction'],
+        colors = theme.parseColors(json['colors']);
 
   @override
   void update(dt) {
     final step = 100 * dt;
-    angle += step * 0.01745329252;
+    angle += step * degToRad;
   }
 
   createCircle() {
@@ -53,7 +49,7 @@ class FullCircle extends PositionComponent
     // }
     for (double i = 0; i < 360; i += step) {
       add(CirclePart(
-          centerPos, i, step, radius, colors.elementAt(colorIndex), 40));
+          centerPos, i, step, circleRadius, colors.elementAt(colorIndex), 40));
       colorIndex++;
     }
   }
@@ -101,11 +97,12 @@ class CirclePart extends PositionComponent
     List<Vector2> outer = [];
     double res = 0;
 
-    if (sweepAngle > 36) {
+    if (sweepAngle > 120) {
       res = sweepAngle / resTable[sweepAngle.round()]!;
     } else {
       res = sweepAngle / 2;
     }
+    res = sweepAngle / 3;
     for (double i = startAngle; i <= sweepAngle + 1 + startAngle; i += res) {
       inner.add(Vector2((radius / 2 - (stroke / 2)) * cos(i * 0.01745329252),
           (radius / 2 - (stroke / 2)) * sin(i * 0.01745329252)));

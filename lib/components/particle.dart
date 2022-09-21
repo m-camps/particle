@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:particle/circle.dart';
+import 'package:particle/components/circle.dart';
 import 'package:particle/config/colors.dart';
 import 'package:particle/config/config.dart';
 import 'package:particle/config/constants.dart';
