@@ -13,6 +13,8 @@ class FullCircle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
   // Game Variables
   double circleRadius = 400;
+  double speedStart = 100;
+  double speedMult = 10;
   double strokeWidth = 10;
   double direction = 1;
   List<Color> colors = [theme.blue, theme.red];
@@ -28,11 +30,13 @@ class FullCircle extends PositionComponent
       : circleRadius = json['circleRadius'],
         strokeWidth = json['strokeWidth'],
         direction = json['direction'],
+        speedStart = json['speedStart'],
+        speedMult = json['speedMultiplier'],
         colors = theme.parseColors(json['colors']);
 
   @override
   void update(dt) {
-    final step = 100 * dt;
+    final step = speedStart * dt;
     angle += step * degToRad;
   }
 
@@ -40,17 +44,11 @@ class FullCircle extends PositionComponent
     final segments = colors.length;
     final step = 360 / segments;
     final Vector2 centerPos = Vector2(size.x / 2, size.y / 2);
-    var colorIndex = 0;
+    int colorIndex = 0;
 
-    // for (double i = 0; i < 360; i += step) {
-    //   add(CirclePart(centerPos, i, step, radius,
-    //       Color(int.parse(colors.elementAt(colorIndex))), 40));
-    //   colorIndex++;
-    // }
-    for (double i = 0; i < 360; i += step) {
-      add(CirclePart(
-          centerPos, i, step, circleRadius, colors.elementAt(colorIndex), 40));
-      colorIndex++;
+    for (double i = 0; i < 360; i += step, colorIndex++) {
+      add(CirclePart(centerPos, i, step, circleRadius,
+          colors.elementAt(colorIndex), strokeWidth));
     }
   }
 }
@@ -61,12 +59,17 @@ class CirclePart extends PositionComponent
   final double sweepAngle;
   final double radius;
   final Color color;
-  final double stroke;
+  final double strokeWidth;
   late ShapeHitbox hitbox;
 
-  CirclePart(Vector2 pos, this.startAngle, this.sweepAngle, this.radius,
-      this.color, this.stroke)
-      : super(position: pos);
+  CirclePart(
+    Vector2 pos,
+    this.startAngle,
+    this.sweepAngle,
+    this.radius,
+    this.color,
+    this.strokeWidth,
+  ) : super(position: pos);
 
   @override
   Future<void> onLoad() async {
@@ -82,13 +85,13 @@ class CirclePart extends PositionComponent
     canvas.drawArc(
       Rect.fromCenter(
           center: const Offset(0, 0), width: radius, height: radius),
-      startAngle * 0.01745329252,
-      sweepAngle * 0.01745329252,
+      startAngle * degToRad,
+      sweepAngle * degToRad,
       false,
       Paint()
         ..color = color
         ..style = PaintingStyle.stroke
-        ..strokeWidth = stroke,
+        ..strokeWidth = strokeWidth,
     );
   }
 
@@ -104,10 +107,10 @@ class CirclePart extends PositionComponent
     }
     res = sweepAngle / 3;
     for (double i = startAngle; i <= sweepAngle + 1 + startAngle; i += res) {
-      inner.add(Vector2((radius / 2 - (stroke / 2)) * cos(i * 0.01745329252),
-          (radius / 2 - (stroke / 2)) * sin(i * 0.01745329252)));
-      outer.add(Vector2((radius / 2 + (stroke / 2)) * cos(i * 0.01745329252),
-          (radius / 2 + (stroke / 2)) * sin(i * 0.01745329252)));
+      inner.add(Vector2((radius / 2 - (strokeWidth / 2)) * cos(i * degToRad),
+          (radius / 2 - (strokeWidth / 2)) * sin(i * degToRad)));
+      outer.add(Vector2((radius / 2 + (strokeWidth / 2)) * cos(i * degToRad),
+          (radius / 2 + (strokeWidth / 2)) * sin(i * degToRad)));
     }
     outer = List.from(outer.reversed);
     return inner + outer;

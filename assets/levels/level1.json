@@ -5,19 +5,21 @@
 		"speedStart": 200,
 		"speedMultiplier": 10,
 		"direction": -1,
-		"color": ["red", "blue", "green"]
+		"color": ["red", "green"]
 	},
 	"Circles": [
 		{
 			"circleRadius": 400, 
-			"velocity": 100,
+			"speedStart": 100,
+			"speedMultiplier": 10,
 			"strokeWidth": 20,
 			"direction": -1,
-			"colors": ["empty", "empty", "green","empty", "empty", "green"]
+			"colors": ["empty", "empty", "blue","empty", "empty", "green"]
 		},
 		{
 			"circleRadius": 500,
-			"velocity": 100,
+			"speedStart": 100,
+			"speedMultiplier": 10,
 			"strokeWidth": 20,
 			"direction": 1,
 			"colors": ["red", "red", "green","green","green","green"]
