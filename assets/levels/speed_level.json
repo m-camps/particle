@@ -1,0 +1,21 @@
+{
+	"Particle": {
+		"name": "Speed",
+		"pathRadius": 100,
+		"particleSize": 10,
+		"speedStart": 300,
+		"speedMultiplier": 10,
+		"direction": -1,
+		"color": ["red", "green", "blue"]
+	},
+	"Circles": [
+		{
+			"circleRadius": 400, 
+			"speedStart": 100,
+			"speedMultiplier": 10,
+			"strokeWidth": 30,
+			"direction": 1,
+			"colors": ["blue", "green", "red"]
+		}
+	]
+}

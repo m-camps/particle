@@ -6,6 +6,7 @@ import 'package:particle/components/circle.dart';
 import 'package:particle/config/colors.dart';
 import 'package:particle/config/config.dart';
 import 'package:particle/config/constants.dart';
+import 'package:particle/config/globals.dart';
 import 'package:particle/game.dart';
 import 'dart:developer' as console;
 
@@ -27,12 +28,14 @@ class Particle extends PositionComponent
   double speedMultiplier = 2;
   double direction = -1;
   List<Color> color = [theme.blue];
+  String name = "dev";
 
   // Hitbox
   late ShapeHitbox hitbox;
 
   Particle.fromJson(Map<String, dynamic> json)
-      : pathRadius = json['pathRadius'],
+      : name = json['name'],
+        pathRadius = json['pathRadius'],
         particleSize = json['particleSize'],
         speedStart = json['speedStart'],
         speedMultiplier = json['speedMultiplier'],
@@ -100,6 +103,7 @@ class Particle extends PositionComponent
       if (other.color == selColor) {
         console.log("Score");
         resetParticle();
+        updateHighScore();
         score += 1;
       } else if (other.color == theme.empty) {
       } else {
@@ -108,5 +112,11 @@ class Particle extends PositionComponent
         score = 0;
       }
     }
+  }
+
+  void updateHighScore() {
+    if (!global.highscores.containsKey(name)) global.highscores[name] = 0;
+    if (score > global.highscores[name]!) global.highscores[name] = score;
+    console.log(global.highscores.toString());
   }
 }

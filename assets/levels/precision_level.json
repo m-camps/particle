@@ -1,0 +1,21 @@
+{
+	"Particle": {
+		"name": "Precision",
+		"pathRadius": 80,
+		"particleSize": 10,
+		"speedStart": 150,
+		"speedMultiplier": 5,
+		"direction": -1,
+		"color": ["red"]
+	},
+	"Circles": [
+		{
+			"circleRadius": 400, 
+			"speedStart": 100,
+			"speedMultiplier": 10,
+			"strokeWidth": 30,
+			"direction": 1,
+			"colors": ["blue","blue","blue","blue","blue","blue", "blue","red"]
+		}
+	]
+}

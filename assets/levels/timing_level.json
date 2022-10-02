@@ -1,24 +1,24 @@
 {
 	"Particle": {
-		"name": "dev",
+		"name": "Timing",
 		"pathRadius": 100,
 		"particleSize": 10,
-		"speedStart": 200,
+		"speedStart": 150,
 		"speedMultiplier": 10,
 		"direction": -1,
 		"color": ["red", "blue"]
 	},
 	"Circles": [
 		{
-			"circleRadius": 300, 
+			"circleRadius": 350, 
 			"speedStart": 100,
 			"speedMultiplier": 0,
-			"strokeWidth": 30,
+			"strokeWidth": 20,
 			"direction": 1,
-			"colors": ["empty", "empty", "green","empty", "empty", "green"]
+			"colors": ["empty", "empty", "empty", "empty", "green"]
 		},
 		{
-			"circleRadius": 400,
+			"circleRadius": 450,
 			"speedStart": 80,
 			"speedMultiplier": 0,
 			"strokeWidth": 30,

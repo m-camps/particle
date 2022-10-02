@@ -11,6 +11,7 @@ import 'dart:developer' as log;
 
 class FullCircle extends PositionComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
+  late double vel = 0;
   // Game Variables
   double circleRadius = 400;
   double speedStart = 100;
@@ -37,7 +38,7 @@ class FullCircle extends PositionComponent
   @override
   void update(dt) {
     final step = speedStart * dt;
-    angle += step * degToRad;
+    angle += step * degToRad * direction;
   }
 
   createCircle() {
@@ -100,12 +101,11 @@ class CirclePart extends PositionComponent
     List<Vector2> outer = [];
     double res = 0;
 
-    if (sweepAngle > 120) {
+    if (sweepAngle > 60) {
       res = sweepAngle / resTable[sweepAngle.round()]!;
     } else {
       res = sweepAngle / 2;
     }
-    res = sweepAngle / 3;
     for (double i = startAngle; i <= sweepAngle + 1 + startAngle; i += res) {
       inner.add(Vector2((radius / 2 - (strokeWidth / 2)) * cos(i * degToRad),
           (radius / 2 - (strokeWidth / 2)) * sin(i * degToRad)));

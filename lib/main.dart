@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
+import 'package:particle/button_list.dart';
 import 'package:particle/config/colors.dart';
 import 'package:particle/game.dart';
 // ignore: unused_import
@@ -47,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: theme.bg,
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
@@ -74,31 +76,34 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: const Center(
-        child: MyGamePage(),
-      ),
+      body: const Center(child: ButtonListView()),
     );
   }
 }
 
-class MyGamePage extends StatefulWidget {
-  const MyGamePage({super.key});
+class LaunchGame extends StatefulWidget {
+  final String level;
+  final String name;
+
+  const LaunchGame(this.level, this.name, {super.key});
 
   @override
-  State<MyGamePage> createState() => _MyGamePageState();
+  State<LaunchGame> createState() => _LaunchGameState();
 }
 
-class _MyGamePageState extends State<MyGamePage> {
+class _LaunchGameState extends State<LaunchGame> {
   late final MainGame _game;
-
   @override
   void initState() {
     super.initState();
-    _game = MainGame();
+    _game = MainGame(widget.level);
   }
 
   @override
   Widget build(BuildContext context) {
-    return GameWidget(game: _game);
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.name)),
+      body: GameWidget(game: _game),
+    );
   }
 }

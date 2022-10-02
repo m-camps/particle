@@ -16,6 +16,9 @@ class MainGame extends FlameGame with HasCollisionDetection, TapDetector {
   late Particle particle;
   late ScaleWrapper wrapper;
   late List<FullCircle> circles = [FullCircle()];
+  final String level;
+
+  MainGame(this.level);
 
   @override
   Future<void> onLoad() async {
@@ -27,7 +30,7 @@ class MainGame extends FlameGame with HasCollisionDetection, TapDetector {
   }
 
   Future<void> buildGame() async {
-    final json = await readJson("assets/levels/level1.json");
+    final json = await readJson(level);
     particle = Particle.fromJson(json['Particle']);
     final allCircles = json['Circles'] as List;
     circles = allCircles.map((i) => FullCircle.fromJson(i)).toList();
