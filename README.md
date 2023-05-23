@@ -14,14 +14,17 @@ A simple casual game made with Flutter Flame [play here](https://m-camps.github.
 
 
 ## Screenshots
-
 Some in app screenshots:
-<p >
-  <img src="assets/app_images/home_page.jpg" width="300" alt="accessibility text">
-  <img src="assets/app_images/create_recipe.jpg" width="300" alt="accessibility text">
-  <img src="assets/app_images/display_recipe.jpg" width="300" alt="accessibility text">
+<p>
+  <img src="assets/app_images/particle_precision.PNG" width="300" alt="accessibility text">
+  <img src="assets/app_images/particle_speed_light.PNG" width="300" alt="accessibility text">
+  <img src="assets/app_images/particle_timing.PNG" width="300" alt="accessibility text">
 </p>
-JSON Level builder snapshot
+
+JSON Level builder:
+<p>
+<img src="assets/app_images/json_level_builder.PNG" width="500" alt="accessibility text">
+</p>
 
 ## Getting Started
 
