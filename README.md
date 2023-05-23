@@ -12,13 +12,13 @@ A simple casual game made with Flutter Flame [play here](https://m-camps.github.
 - PWA running on any device for now -> Can be made into native code when launching
 - Dev overlay menu
 
-
 ## Screenshots
 Some in app screenshots:
 <p>
-  <img src="assets/app_images/particle_precision.PNG" width="300" alt="accessibility text">
-  <img src="assets/app_images/particle_speed_light.PNG" width="300" alt="accessibility text">
-  <img src="assets/app_images/particle_timing.PNG" width="300" alt="accessibility text">
+  <img src="assets/app_images/speed.gif" width="200" alt="accessibility text">
+  <img src="assets/app_images/particle_precision.PNG" width="200" alt="accessibility text">
+  <img src="assets/app_images/particle_speed_light.PNG" width="200" alt="accessibility text">
+  <img src="assets/app_images/particle_timing.PNG" width="200" alt="accessibility text">
 </p>
 
 JSON Level builder:
